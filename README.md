@@ -54,6 +54,27 @@ bun run dev --root ~/projects --exclude '**/temp/**' '**/backup/**'
 
 **Tip**: Always use `--root` to specify a project directory rather than scanning your entire home directory, which can be slow and hit permission errors.
 
+## Configuration
+
+Customize default exclusions and scan options using a `config.yml` file. The tool looks for configs in this order (later configs override earlier ones):
+
+1. `~/.config/source-agents/config.yml` (global config)
+2. `./config.yml` (project root)
+3. `./.source-agents/config.yml` (project hidden folder)
+
+Copy `config.example.yml` to one of these locations and customize:
+
+```sh
+# Global config for all projects
+mkdir -p ~/.config/source-agents
+cp config.example.yml ~/.config/source-agents/config.yml
+
+# Or project-specific config
+cp config.example.yml ./config.yml
+```
+
+See `config.example.yml` for all available options.
+
 ## Global CLI (optional)
 
 Build the CLI:

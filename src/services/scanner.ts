@@ -3,44 +3,14 @@ import fg from 'fast-glob';
 import type { DirectoryInfo, ScanOptions, ScanResult } from '../types/index.js';
 import { analyzeDirectory } from './analyzer.js';
 
-const DEFAULT_EXCLUDE = [
-    // Build artifacts and dependencies
-    '**/node_modules/**',
-    '**/.git/**',
-    '**/dist/**',
-    '**/build/**',
-    '**/.next/**',
-    '**/target/**',
-    '**/__pycache__/**',
-    '**/.pytest_cache/**',
-    '**/venv/**',
-    '**/.venv/**',
-    // IDE and editor folders
-    '**/.vscode/**',
-    '**/.idea/**',
-    // System and protected directories (macOS/Linux)
-    '**/.Trash/**',
-    '**/Library/**',
-    '**/Applications/**',
-    '**/System/**',
-    // Package manager caches
-    '**/.npm/**',
-    '**/.yarn/**',
-    '**/.pnpm/**',
-    '**/.cache/**',
-    // User data directories
-    '**/.local/**',
-    '**/.config/**',
-    // Large media directories (unlikely to contain project files)
-    '**/Music/**',
-    '**/Movies/**',
-    '**/Pictures/**',
-    '**/Photos/**',
-];
-
 export async function scanDirectories(options: ScanOptions): Promise<ScanResult> {
     const startTime = Date.now();
-    const excludePatterns = [...DEFAULT_EXCLUDE, ...(options.exclude || [])];
+
+    // Merge excludes: config excludes + CLI excludes
+    // Config excludes are the base, CLI excludes are additional
+    const configExcludes = options.configExcludes || [];
+    const cliExcludes = options.exclude || [];
+    const excludePatterns = [...configExcludes, ...cliExcludes];
 
     // Find all CLAUDE.md and AGENTS.md files
     const files = await fg(['**/CLAUDE.md', '**/AGENTS.md'], {

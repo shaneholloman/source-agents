@@ -1,0 +1,57 @@
+# source-agents configuration file
+#
+# Place this file in one of these locations (in order of priority):
+#   1. ~/.config/source-agents/config.yml (global config)
+#   2. ./config.yml (project root)
+#   3. ./.source-agents/config.yml (project hidden folder)
+#
+# Project configs override global configs.
+
+# Directories and patterns to exclude from scanning
+exclude:
+  # Build artifacts and dependencies
+  - '**/node_modules/**'
+  - '**/.git/**'
+  - '**/dist/**'
+  - '**/build/**'
+  - '**/.next/**'
+  - '**/target/**'
+  - '**/__pycache__/**'
+  - '**/.pytest_cache/**'
+  - '**/venv/**'
+  - '**/.venv/**'
+
+  # IDE and editor folders
+  - '**/.vscode/**'
+  - '**/.idea/**'
+
+  # System and protected directories (macOS/Linux)
+  - '**/.Trash/**'
+  - '**/Library/**'
+  - '**/Applications/**'
+  - '**/System/**'
+
+  # Package manager caches
+  - '**/.npm/**'
+  - '**/.yarn/**'
+  - '**/.pnpm/**'
+  - '**/.cache/**'
+
+  # User data directories
+  - '**/.local/**'
+  - '**/.config/**'
+
+  # Large media directories
+  - '**/Music/**'
+  - '**/Movies/**'
+  - '**/Pictures/**'
+  - '**/Photos/**'
+
+  # Add your custom patterns here
+  # - '**/temp/**'
+  # - '**/backup/**'
+
+# Scan options
+scanOptions:
+  followSymlinks: false
+  verbose: false

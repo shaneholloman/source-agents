@@ -26,6 +26,24 @@ bun run build         # Build ESM output to dist/
 node dist/cli.js      # Run built CLI
 ```
 
+## Configuration System
+
+The tool uses a hierarchical configuration system with YAML files:
+
+**Config locations** (in order of priority):
+
+1. `~/.config/source-agents/config.yml` - Global config for all projects
+2. `./config.yml` - Project root config
+3. `./.source-agents/config.yml` - Project hidden folder config
+
+Project configs override global configs. See `config.example.yml` for structure.
+
+**Config loader** (`utils/config.ts`):
+
+- Loads and merges configs from multiple locations
+- Provides default exclude patterns if no config found
+- Handles YAML parsing with js-yaml library
+
 ## Architecture Overview
 
 The codebase follows a three-layer service architecture:
@@ -35,8 +53,10 @@ The codebase follows a three-layer service architecture:
 - Uses fast-glob to recursively find all CLAUDE.md and AGENTS.md files
 - Groups files by directory
 - Returns list of directories containing these files
-- Default excludes: node_modules, .git, dist, build artifacts, IDE folders, system folders (.Trash, Library, Applications, System), package manager caches (.npm, .yarn, .pnpm, .cache), user data directories (.local, .config), and large media folders (Music, Movies, Pictures, Photos)
+- Exclude patterns come from config files (see Configuration System above)
+- Default excludes include: node_modules, .git, dist, build artifacts, IDE folders, system folders, package manager caches, and large media folders
 - Permission errors are suppressed via `suppressErrors: true` to prevent crashes when scanning restricted directories
+- Accepts both `configExcludes` (from config file) and `exclude` (from CLI) and merges them
 
 ### 2. Analyzer Layer (`services/analyzer.ts`)
 
@@ -64,6 +84,8 @@ The codebase follows a three-layer service architecture:
 
 ```flow
 CLI (cli.tsx)
+  ↓
+Load Config (config.yml) → Merge with CLI args
   ↓
 App Component (components/App.tsx) - State machine with 5 states
   ↓

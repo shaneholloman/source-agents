@@ -37,7 +37,8 @@ export interface Action {
 
 export interface ScanOptions {
     root: string;
-    exclude?: string[];
+    exclude?: string[]; // CLI-provided excludes
+    configExcludes?: string[]; // Config file excludes
     verbose?: boolean;
 }
 
@@ -45,4 +46,12 @@ export interface ScanResult {
     directories: DirectoryInfo[];
     totalScanned: number;
     duration: number;
+}
+
+export interface Config {
+    exclude: string[];
+    scanOptions?: {
+        followSymlinks?: boolean;
+        verbose?: boolean;
+    };
 }

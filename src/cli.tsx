@@ -5,6 +5,7 @@ import os from 'node:os';
 import { Command } from 'commander';
 import { render } from 'ink';
 import { App } from './components/App.js';
+import { loadConfig } from './utils/config.js';
 import { expandPath } from './utils/paths.js';
 
 const program = new Command();
@@ -36,10 +37,14 @@ try {
     process.exit(1);
 }
 
+// Load configuration
+const config = loadConfig(root);
+
 const scanOptions = {
     root,
     exclude: opts.exclude || [],
-    verbose: opts.verbose || false,
+    configExcludes: config.exclude,
+    verbose: opts.verbose || config.scanOptions?.verbose || false,
 };
 
 // Render the Ink app
