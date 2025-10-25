@@ -44,11 +44,15 @@ Preview without making changes:
 bun run dev --root ~/projects --dry-run
 ```
 
-Exclude extra directories (in addition to node_modules, .git, dist, etc.):
+Exclude extra directories (in addition to defaults):
 
 ```sh
 bun run dev --root ~/projects --exclude '**/temp/**' '**/backup/**'
 ```
+
+**Note**: Many directories are excluded by default (node_modules, .git, dist, build artifacts, system folders like .Trash, Library, Applications, package manager caches, and large media folders). Use `--exclude` to add more patterns.
+
+**Tip**: Always use `--root` to specify a project directory rather than scanning your entire home directory, which can be slow and hit permission errors.
 
 ## Global CLI (optional)
 

@@ -5,6 +5,11 @@ import { AGENTS_TEMPLATE, CLAUDE_SOURCING_ONLY, CLAUDE_TEMPLATE } from '../utils
 
 const SOURCING_DIRECTIVE = '@AGENTS.md\n\n';
 
+function getErrorMessage(error: unknown): string {
+    if (error instanceof Error) return error.message;
+    return String(error);
+}
+
 export async function executeAction(action: Action, dryRun: boolean = false): Promise<string> {
     const agentsPath = path.join(action.directory, 'AGENTS.md');
     const claudePath = path.join(action.directory, 'CLAUDE.md');
@@ -116,8 +121,8 @@ export async function executeAction(action: Action, dryRun: boolean = false): Pr
             default:
                 return `Unknown action type: ${action.type}`;
         }
-    } catch (error: any) {
-        throw new Error(`Failed to execute action: ${error.message}`);
+    } catch (error: unknown) {
+        throw new Error(`Failed to execute action: ${getErrorMessage(error)}`);
     }
 }
 
@@ -138,8 +143,8 @@ export async function executeActions(
         try {
             const message = await executeAction(action, dryRun);
             results.set(action.directory, { success: true, message });
-        } catch (error: any) {
-            results.set(action.directory, { success: false, message: error.message });
+        } catch (error: unknown) {
+            results.set(action.directory, { success: false, message: getErrorMessage(error) });
         }
     }
 

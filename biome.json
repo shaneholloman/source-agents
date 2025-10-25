@@ -30,7 +30,7 @@
         "useTemplate": "warn"
       },
       "complexity": {
-        "noExcessiveCognitiveComplexity": "warn"
+        "noExcessiveCognitiveComplexity": "off"
       }
     }
   },

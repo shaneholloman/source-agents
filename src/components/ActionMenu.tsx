@@ -211,7 +211,7 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
                 const recommendedBadge = option.recommended ? ' [recommended]' : '';
 
                 return (
-                    <Box key={index}>
+                    <Box key={option.type}>
                         <Text color={isSelected ? 'cyan' : 'white'} bold={isSelected}>
                             {prefix}
                             {option.label}

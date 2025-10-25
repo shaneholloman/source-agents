@@ -73,12 +73,12 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({ directories, maxPath
             </Box>
 
             {/* Rows */}
-            {directories.map((dir, index) => {
+            {directories.map((dir) => {
                 const indicator = getActionIndicator(dir.needsAction);
                 const displayPath = shortenPath(dir.path, maxPathWidth - 2);
 
                 return (
-                    <Box key={index}>
+                    <Box key={dir.path}>
                         <Box width={3}>
                             <Text color={indicator.color}>{indicator.symbol}</Text>
                         </Box>

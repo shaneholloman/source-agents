@@ -4,18 +4,38 @@ import type { DirectoryInfo, ScanOptions, ScanResult } from '../types/index.js';
 import { analyzeDirectory } from './analyzer.js';
 
 const DEFAULT_EXCLUDE = [
+    // Build artifacts and dependencies
     '**/node_modules/**',
     '**/.git/**',
     '**/dist/**',
     '**/build/**',
     '**/.next/**',
-    '**/.vscode/**',
-    '**/.idea/**',
     '**/target/**',
     '**/__pycache__/**',
     '**/.pytest_cache/**',
     '**/venv/**',
     '**/.venv/**',
+    // IDE and editor folders
+    '**/.vscode/**',
+    '**/.idea/**',
+    // System and protected directories (macOS/Linux)
+    '**/.Trash/**',
+    '**/Library/**',
+    '**/Applications/**',
+    '**/System/**',
+    // Package manager caches
+    '**/.npm/**',
+    '**/.yarn/**',
+    '**/.pnpm/**',
+    '**/.cache/**',
+    // User data directories
+    '**/.local/**',
+    '**/.config/**',
+    // Large media directories (unlikely to contain project files)
+    '**/Music/**',
+    '**/Movies/**',
+    '**/Pictures/**',
+    '**/Photos/**',
 ];
 
 export async function scanDirectories(options: ScanOptions): Promise<ScanResult> {
@@ -29,6 +49,7 @@ export async function scanDirectories(options: ScanOptions): Promise<ScanResult>
         ignore: excludePatterns,
         onlyFiles: true,
         followSymbolicLinks: false,
+        suppressErrors: true, // Suppress permission errors
     });
 
     // Group files by directory

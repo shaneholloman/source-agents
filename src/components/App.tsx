@@ -10,6 +10,11 @@ import { ResultsTable } from './ResultsTable.js';
 import { Scanner } from './Scanner.js';
 import { Summary } from './Summary.js';
 
+function getErrorMessage(error: unknown): string {
+    if (error instanceof Error) return error.message;
+    return String(error);
+}
+
 interface AppProps {
     options: ScanOptions;
     dryRun?: boolean;
@@ -56,8 +61,8 @@ export const App: React.FC<AppProps> = ({ options, dryRun = false, auto = false 
                 } else {
                     setState('displaying');
                 }
-            } catch (err: any) {
-                setError(err.message);
+            } catch (err: unknown) {
+                setError(getErrorMessage(err));
                 setState('complete');
             }
         };
@@ -75,8 +80,11 @@ export const App: React.FC<AppProps> = ({ options, dryRun = false, auto = false 
                     try {
                         const message = await executeAction(action, dryRun);
                         newResults.set(action.directory, { success: true, message });
-                    } catch (err: any) {
-                        newResults.set(action.directory, { success: false, message: err.message });
+                    } catch (err: unknown) {
+                        newResults.set(action.directory, {
+                            success: false,
+                            message: getErrorMessage(err),
+                        });
                     }
                 }
 
@@ -96,9 +104,12 @@ export const App: React.FC<AppProps> = ({ options, dryRun = false, auto = false 
                 setResults((prev) =>
                     new Map(prev).set(action.directory, { success: true, message })
                 );
-            } catch (err: any) {
+            } catch (err: unknown) {
                 setResults((prev) =>
-                    new Map(prev).set(action.directory, { success: false, message: err.message })
+                    new Map(prev).set(action.directory, {
+                        success: false,
+                        message: getErrorMessage(err),
+                    })
                 );
             }
 
@@ -138,9 +149,12 @@ export const App: React.FC<AppProps> = ({ options, dryRun = false, auto = false 
                 setCurrentDirIndex(nextIdx);
                 setState('selecting');
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             setResults((prev) =>
-                new Map(prev).set(action.directory, { success: false, message: err.message })
+                new Map(prev).set(action.directory, {
+                    success: false,
+                    message: getErrorMessage(err),
+                })
             );
             setState('selecting');
         }

@@ -21,8 +21,8 @@ async function getFileStatus(filePath: string): Promise<FileStatus> {
         }
 
         return 'missing';
-    } catch (error: any) {
-        if (error.code === 'ENOENT') {
+    } catch (error: unknown) {
+        if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
             return 'missing';
         }
         throw error;

@@ -52,7 +52,7 @@ export const Summary: React.FC<SummaryProps> = ({
             </Box>
 
             {/* Rows */}
-            {entries.map(([dir, result], idx) => {
+            {entries.map(([dir, result]) => {
                 const displayPath = shortenPath(dir, maxPathWidth - 2);
                 const resultText = truncateOneLine(result.message, resultWidth - 2);
 
@@ -80,7 +80,7 @@ export const Summary: React.FC<SummaryProps> = ({
                     resultColor = 'yellow';
                 }
                 return (
-                    <Box key={idx}>
+                    <Box key={dir}>
                         <Box width={maxPathWidth}>
                             <Text color="dim">{displayPath}</Text>
                         </Box>

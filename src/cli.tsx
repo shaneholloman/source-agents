@@ -4,7 +4,6 @@ import fs from 'node:fs';
 import os from 'node:os';
 import { Command } from 'commander';
 import { render } from 'ink';
-import React from 'react';
 import { App } from './components/App.js';
 import { expandPath } from './utils/paths.js';
 
