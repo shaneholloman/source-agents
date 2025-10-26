@@ -20,9 +20,25 @@ export async function executeAction(action: Action, dryRun: boolean = false): Pr
 
     try {
         switch (action.type) {
-            case 'create-agents-empty':
+            case 'create-agents-empty': {
                 await fs.writeFile(agentsPath, AGENTS_TEMPLATE);
-                return `Created empty AGENTS.md`;
+
+                // Also add sourcing to CLAUDE.md if it exists and doesn't already have it
+                try {
+                    const claudeExists = await fs.pathExists(claudePath);
+                    if (claudeExists) {
+                        let claudeContent = await fs.readFile(claudePath, 'utf-8');
+                        if (!claudeContent.includes('@AGENTS.md')) {
+                            claudeContent = SOURCING_DIRECTIVE + claudeContent;
+                            await fs.writeFile(claudePath, claudeContent);
+                        }
+                    }
+                } catch {
+                    // Ignore errors reading/updating CLAUDE.md
+                }
+
+                return `Created empty AGENTS.md and ensured CLAUDE.md sources it`;
+            }
 
             case 'create-agents-from-claude': {
                 const claudeContent = await fs.readFile(claudePath, 'utf-8');

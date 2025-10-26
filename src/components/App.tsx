@@ -325,9 +325,9 @@ function getRecommendedAction(dir: DirectoryInfo): Action {
 
         case 'only-claude':
             return {
-                type: 'create-agents-from-claude',
+                type: 'create-agents-empty',
                 directory: dir.path,
-                description: 'Move content to AGENTS.md',
+                description: 'Create empty AGENTS.md',
                 recommended: true,
             };
 

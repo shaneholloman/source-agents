@@ -109,10 +109,13 @@ Run the TUI in dev mode:
 bun run dev
 ```
 
-Type‑check:
+Code quality:
 
 ```sh
-bun run type-check
+bun run type-check  # TypeScript type checking
+bun run format      # Format code with Biome
+bun run lint        # Lint and auto-fix with Biome
+bun run check       # Run both format and lint
 ```
 
 Build:

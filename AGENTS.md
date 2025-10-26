@@ -13,6 +13,7 @@
 
 - Install: `bun install`
 - Dev TUI: `bun run dev --root ~/projects` (use `--auto`, `--dry-run`, `--exclude` as needed).
+- Code Quality: `bun run format`, `bun run lint`, `bun run check` (format + lint with Biome).
 - Type‑check: `bun run type-check`
 - Build: `bun run build` (emits ESM to `dist/`).
 - Start built CLI: `node dist/cli.js --help`
@@ -20,7 +21,7 @@
 
 ## Coding Style & Naming
 
-- TypeScript strict, ESM imports, 2‑space indent.
+- TypeScript strict, ESM imports, 4‑space indent (Biome configured).
 - Components: PascalCase files (`ResultsTable.tsx`, `ActionMenu.tsx`).
 - Services/Utils/Types: lowercase filenames (`scanner.ts`, `paths.ts`, `index.ts`).
 - Use camelCase for variables/functions, UPPER_SNAKE_CASE for constants, named exports preferred.
@@ -44,7 +45,8 @@
 
 - Requires Node 18+ and Bun 1.1+. ESM only.
 - Use `--dry-run` for potentially destructive actions; limit scans with `--root`.
-- Default excludes: `node_modules`, `.git`, `dist`, common build caches. Add extras via `--exclude`.
+- Config system: Hierarchical YAML config files at `~/.config/source-agents/config.yml` (global), `./config.yml` (project), or `./.source-agents/config.yml` (hidden). See `config.example.yml`.
+- Default excludes: `node_modules`, `.git`, `dist`, system folders, package manager caches, large media directories. Customize via config or `--exclude`.
 
 ## Agent‑Specific Notes
 

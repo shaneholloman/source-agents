@@ -79,6 +79,7 @@ The codebase follows a three-layer service architecture:
 - All file operations use fs-extra
 - Supports dry-run mode for previewing changes
 - Uses templates from `utils/templates.ts` for creating new files
+- **Safer defaults**: The `create-agents-empty` action automatically adds `@AGENTS.md` sourcing to existing CLAUDE.md files, making it a non-destructive default for the "only-claude" scenario
 
 ### Data Flow
 
@@ -107,6 +108,17 @@ The main App component (`components/App.tsx`) implements a state machine:
 State transitions are managed via React's useState and triggered by user input or operation completion.
 
 ## Important Patterns
+
+### Recommended Actions Philosophy
+
+The tool prioritizes **non-destructive defaults**:
+
+- When only CLAUDE.md exists (`only-claude` scenario), the recommended action is to create an empty AGENTS.md file rather than moving content
+- The `create-agents-empty` action automatically adds the `@AGENTS.md` sourcing directive to CLAUDE.md
+- This preserves existing content while establishing proper file relationships
+- Users can still choose the more destructive "move content" option if desired, but it's not the default
+
+This design prevents accidental content loss while maintaining flexibility.
 
 ### File Sourcing Pattern
 
